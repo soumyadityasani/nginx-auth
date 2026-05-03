@@ -5,19 +5,18 @@ events {
 http {
     resolver 169.254.20.10 valid=10s ipv6=off;
 
-    map $connection $backend {
-    ~*0$ "auth-service-49302815.onrender.com";
-    ~*1$ "auth-service-1-u62y.onrender.com";
-    ~*2$ "auth-service-2-20oe.onrender.com";
-    ~*3$ "auth-service-3-n9g9.onrender.com";
-    ~*4$ "auth-service-4-av8y.onrender.com";
-    ~*5$ "auth-service-5-2pni.onrender.com";
-    ~*6$ "auth-service-6-qsz4.onrender.com";
-    ~*7$ "auth-service-7-bh8l.onrender.com";
-    ~*8$ "auth-service-8.onrender.com";
-    ~*9$ "auth-service-9.onrender.com";
-    default "auth-service-49302815.onrender.com";
-}
+    split_clients "${request_id}" $backend {
+        10%  "auth-service-49302815.onrender.com";
+        10%  "auth-service-1-u62y.onrender.com";
+        10%  "auth-service-2-20oe.onrender.com";
+        10%  "auth-service-3-n9g9.onrender.com";
+        10%  "auth-service-4-av8y.onrender.com";
+        10%  "auth-service-5-2pni.onrender.com";
+        10%  "auth-service-6-qsz4.onrender.com";
+        10%  "auth-service-7-bh8l.onrender.com";
+        10%  "auth-service-8.onrender.com";
+        *    "auth-service-9.onrender.com";
+    }
 
     server {
         listen 80;
